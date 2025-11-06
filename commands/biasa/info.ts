@@ -7,7 +7,7 @@ import { baileys } from "../../config/baileys.ts";
 
 const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 
-    const latency = Date.now() - (Date.now());
+    const uptime = Math.floor(process.uptime());
 
 
     await sock.sendMessage(msg.key.remoteJid as string, {
@@ -29,11 +29,11 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 ╭───〔 *📊 SYSTEM INFO* 〕
 │💻 Platform: _Node.js v20_
 │📈 Memory: _${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB_
-│⏱️ Response Time: _${latency} ms_
+│⏱️ UpTime: _${uptime} s_
 ╰───────────────
 
 ✨ _Ketik .menu untuk melihat semua command tersedia._
-        `
+        `.trim()
     })
 }
 
