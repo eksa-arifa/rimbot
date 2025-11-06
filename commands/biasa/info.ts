@@ -9,6 +9,8 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 
     const latency = Date.now() - (Date.now());
 
+    await sock.readMessages([msg.key])
+
     await sock.sendMessage(msg.key.remoteJid as string, {
         text: `
         🤖 *RIMBOT BY REMMY*
@@ -33,6 +35,14 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 
 ✨ _Ketik .menu untuk melihat semua command tersedia._
         `
+    })
+
+
+    await sock.sendMessage(msg.key.remoteJid as string, {
+        react: {
+            text: '✅',
+            key: msg.key
+        }
     })
 }
 
