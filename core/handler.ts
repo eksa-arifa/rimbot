@@ -12,7 +12,9 @@ const handler= async (msg: WAMessage, sock: typeof baileys.sock, type: string)=>
     for(let command of commands){
         const prefixedCommand = `${RimBotConfig.prefix}${command[0]}`
 
-        if(msg.message?.conversation?.toLowerCase() == prefixedCommand){
+        const userMsgArray: string[] = msg.message?.conversation?.toLowerCase().split(" ") as string[]
+
+        if(userMsgArray[0] == prefixedCommand){
             await sock.readMessages([msg.key])
 
             await command[1](msg, sock)
