@@ -32,7 +32,7 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 │⏱️ UpTime: _${uptime} s_
 ╰───────────────
 
-✨ _Ketik /menu untuk melihat semua command tersedia._
+✨ _Ketik ${RimBotConfig.prefix}menu untuk melihat semua command tersedia._
         `.trim()
     })
 }
