@@ -26,16 +26,7 @@ const startBot = async () => {
 
 
         if (textBiasa != null) {
-            await sock.readMessages([msg.key])
-
             await handler(msg, sock, "biasa")
-
-            await sock.sendMessage(msg.key.remoteJid as string, {
-                react: {
-                    text: '✅',
-                    key: msg.key
-                }
-            })
         }
 
     })
