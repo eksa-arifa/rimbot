@@ -11,7 +11,10 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 
 
     await sock.sendMessage(msg.key.remoteJid as string, {
-        text: `
+        image: {
+            url: "https://itkoding.com/wp-content/uploads/2023/07/gambar-anime-keren-naruto-dan-sasuke.jpg"
+        },
+        caption: `
         🤖 *RIMBOT BY REMMY*
 
 ╭───〔 *💡 BOT STATUS* 〕
@@ -34,7 +37,7 @@ const info = async (msg: WAMessage, sock: typeof baileys.sock) => {
 
 ✨ _Ketik ${RimBotConfig.prefix}menu untuk melihat semua command tersedia._
         `.trim()
-    })
+    }, {quoted: msg})
 }
 
 
