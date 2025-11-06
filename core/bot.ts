@@ -29,6 +29,10 @@ const startBot = async () => {
             await handler(msg, sock, "biasa")
         }
 
+        if (textReply != null){
+            await handler(msg, sock, "replyan")
+        }
+
     })
 }
 
