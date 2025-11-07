@@ -1,4 +1,4 @@
 /node_modules
 /auth
-/commands/commands.json
+/src/commands/commands.json
 /dist
