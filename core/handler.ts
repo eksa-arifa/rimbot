@@ -10,7 +10,6 @@ const handler = async (msg: WAMessage, sock: typeof baileys.sock, type: string, 
     const commands = getCommand(type)
 
     for (let command of commands) {
-        console.log(command)
         const prefixedCommand = `${RimBotConfig.prefix}${command[0]}`
 
         const userMsgArray: string[] = message.toLowerCase().split(" ") as string[]
