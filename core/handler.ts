@@ -16,6 +16,12 @@ const handler = async (msg: WAMessage, sock: typeof baileys.sock, type: string, 
 
         if (userMsgArray[0] == prefixedCommand) {
             await sock.readMessages([msg.key])
+            await sock.sendMessage(msg.key.remoteJid as string, {
+                react: {
+                    text: '⏳',
+                    key: msg.key
+                }
+            })
 
             await command[1](msg, sock)
 
