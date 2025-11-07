@@ -36,6 +36,8 @@ function loadCommand() {
 
     writeFileSync(jsonDir, JSON.stringify(listCommand));
 
+    console.log("Command sudah terload, siap digunakan")
+
 }
 
 
