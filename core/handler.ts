@@ -1,7 +1,7 @@
 import { type WAMessage } from "baileys"
-import { getCommand } from "./command.ts"
-import { RimBotConfig } from "../config/rimbot.ts"
-import { baileys } from "../config/baileys.ts"
+import { getCommand } from "./command"
+import { RimBotConfig } from "../config/rimbot"
+import { baileys } from "../config/baileys"
 
 
 

@@ -1,6 +1,6 @@
 import { type WAMessage } from "baileys"
-import { RimBotConfig } from "../../config/rimbot.ts";
-import { baileys } from "../../config/baileys.ts";
+import { RimBotConfig } from "../../config/rimbot";
+import { baileys } from "../../config/baileys";
 
 
 

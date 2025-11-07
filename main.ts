@@ -1,5 +1,5 @@
-import { startBot } from "./core/bot.ts";
-import { loadCommand } from "./core/command.ts";
+import { startBot } from "./core/bot";
+import { loadCommand } from "./core/command";
 
 
 
