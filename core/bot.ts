@@ -22,15 +22,11 @@ const startBot = async () => {
         const msg = message.messages[0]
 
         const textBiasa = msg.message?.conversation?.toLowerCase() || null
-        const textReply = msg.message?.extendedTextMessage?.text?.toLocaleLowerCase() || null
+        // const textReply = msg.message?.extendedTextMessage?.text?.toLocaleLowerCase() || null
 
 
         if (textBiasa != null) {
             await handler(msg, sock, "biasa", textBiasa)
-        }
-
-        if (textReply != null){
-            await handler(msg, sock, "replyan", textReply)
         }
 
     })
