@@ -1,6 +1,6 @@
 import QRCode from "qrcode"
-import { baileys, saveCreds } from "../config/baileys"
-import { handler } from "./handler"
+import { baileys, saveCreds } from "../config/baileys.js"
+import { handler } from "./handler.js"
 
 
 const startBot = async () => {

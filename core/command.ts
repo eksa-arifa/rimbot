@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, extname, join } from "path";
 import { fileURLToPath } from "url";
-import { RimBotConfig } from "../config/rimbot";
+import { RimBotConfig } from "../config/rimbot.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
