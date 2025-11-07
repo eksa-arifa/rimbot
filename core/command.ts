@@ -41,7 +41,7 @@ function loadCommand() {
 }
 
 
-function getCommand(category: string) {
+async function getCommand(category: string) {
     const commandData = JSON.parse(readFileSync(jsonDir, "utf8"));
 
     const lists = commandData[category];
@@ -51,7 +51,11 @@ function getCommand(category: string) {
     const exports = []
 
     for(const list of lists){
-        exports.push(list)
+        const mod = await import(list[1])
+
+
+
+        exports.push([list[0], mod.default])
     }
     
     return exports;
