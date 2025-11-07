@@ -1,8 +1,7 @@
 import { type WAMessage } from "baileys"
-import { getCommand, loadCommand } from "./command.ts"
+import { getCommand } from "./command.ts"
 import { RimBotConfig } from "../config/rimbot.ts"
 import { baileys } from "../config/baileys.ts"
-import { readFileSync } from "fs"
 
 
 
