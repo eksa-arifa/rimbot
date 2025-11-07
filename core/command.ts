@@ -11,7 +11,7 @@ const commandDir = join(__dirname, "..", "commands")
 const jsonDir = join(commandDir, "commands.json")
 
 
-async function loadCommand() {
+function loadCommand() {
 
     const directories = RimBotConfig.command_types
     let listCommand: Record<string, string[][]> = {}
