@@ -1,23 +1,27 @@
 import { type WAMessage } from "baileys"
-import { loadCommand } from "./command.ts"
+import { getCommand, loadCommand } from "./command.ts"
 import { RimBotConfig } from "../config/rimbot.ts"
 import { baileys } from "../config/baileys.ts"
+import { readFileSync } from "fs"
 
 
 
 
-const handler= async (msg: WAMessage, sock: typeof baileys.sock, type: string)=>{
-    const commands = await loadCommand(type)
+const handler = async (msg: WAMessage, sock: typeof baileys.sock, type: string, message: string) => {
+    const commands = getCommand(type)
 
-    for(let command of commands){
+    for (let command of commands) {
+        console.log(command)
         const prefixedCommand = `${RimBotConfig.prefix}${command[0]}`
 
-        const userMsgArray: string[] = msg.message?.conversation?.toLowerCase().split(" ") as string[]
+        const userMsgArray: string[] = message.toLowerCase().split(" ") as string[]
 
-        if(userMsgArray[0] == prefixedCommand){
+        if (userMsgArray[0] == prefixedCommand) {
             await sock.readMessages([msg.key])
 
-            await command[1](msg, sock)
+            const mod = await import(command[1])
+
+            await mod.default(msg, sock)
 
             await sock.sendMessage(msg.key.remoteJid as string, {
                 react: {
@@ -30,4 +34,4 @@ const handler= async (msg: WAMessage, sock: typeof baileys.sock, type: string)=>
 }
 
 
-export {handler}
+export { handler }

@@ -1,8 +1,12 @@
+import { join } from "path"
 
 
 
 const RimBotConfig = {
-    prefix: "/"
+    prefix: "/",
+    command_types: [
+        "biasa", "replyan"
+    ],
 }
 
 
