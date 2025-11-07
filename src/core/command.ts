@@ -20,14 +20,14 @@ function loadCommand() {
 
         const dir = join(commandDir, directory)
         const files = readdirSync(dir).filter(file =>
-            [".ts"].includes(extname(file))
+            [".ts", ".js"].includes(extname(file))
         );
         const exports: string[][] = []
 
         for (const file of files) {
             const filePath = join(dir, file);
 
-            exports.push([file.replace(/\.(ts)$/, ""), filePath])
+            exports.push([file.replace(/\.(ts|js)$/, ""), filePath])
         }
 
         listCommand[directory] = exports
