@@ -1,36 +1,23 @@
-import sharp from "sharp";
-
+import { createCanvas, loadImage } from "canvas";
 
 export async function addTextBelowImage(imageBuffer: Buffer, text: string) {
-    if (text.length >= 16) {
-        return imageBuffer
-    }
+  if (text.length >= 16) return imageBuffer;
 
-    const width = 512;
-    const height = 512;
-    const fontSize = 60;
+  const width = 512;
+  const height = 512;
+  const canvas = createCanvas(width, height + 80);
+  const ctx = canvas.getContext("2d");
 
-    const svg = `
-    <svg width="${width}" height="${height}">
-      <style>
-        .title {
-          fill: white;
-          font-size: ${fontSize}px;
-          font-weight: bold;
-          text-anchor: middle;
-          stroke: black;
-          stroke-width: 3px;
-          paint-order: stroke;
-        }
-      </style>
-      <text x="50%" y="${height - 20}" class="title">${text}</text>
-    </svg>
-  `;
+  const img = await loadImage(imageBuffer);
+  ctx.drawImage(img, 0, 0, width, height);
 
-    const result = await sharp(imageBuffer)
-        .resize(width, height, { fit: "cover" })
-        .composite([{ input: Buffer.from(svg), gravity: "south" }])
-        .toBuffer();
+  ctx.font = "bold 60px Sans";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "white";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 6;
+  ctx.strokeText(text, width / 2, height + 60);
+  ctx.fillText(text, width / 2, height + 60);
 
-    return result;
+  return canvas.toBuffer("image/png");
 }
