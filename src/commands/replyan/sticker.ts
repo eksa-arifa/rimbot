@@ -19,13 +19,11 @@ async function sticker(msg: WAMessage, sock: typeof baileys.sock) {
 
     const sticker = new Sticker(stickerWithText, {
         author: "Eksa Arifa",
-        pack: "RIMBOT GENERATED",
-        quality: 75
+        pack: "RIMBOT"
     })
-    
 
     await sock.sendMessage(msg.key.remoteJid, await sticker.toMessage())
-    if(sanitizeText.length >= 16){
+    if (sanitizeText.length >= 16) {
         await sock.sendMessage(msg.key.remoteJid, {
             text: "Captionnya kepanjangan boss, maksimal 15 karakter termasuk spasi dan karakter khusus... Inget-inget yaa bos, nah karena itu aku nggak munculin teksnya di caption biar tetep aestethic..."
         })
