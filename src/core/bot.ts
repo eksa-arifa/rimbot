@@ -21,8 +21,6 @@ const startBot = async () => {
     sock.ev.on("messages.upsert", async (message) => {
         const msg = message.messages[0]
 
-        console.log(msg)
-
         const textBiasa = msg.message?.conversation?.toLowerCase() || null
         const textReply = msg.message?.extendedTextMessage?.text?.toLocaleLowerCase() || null
         const textImage = msg.message?.imageMessage?.caption?.toLocaleLowerCase() || null

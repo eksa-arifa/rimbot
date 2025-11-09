@@ -23,7 +23,7 @@ const handler = async (msg: WAMessage, sock: typeof baileys.sock, type: string, 
                 }
             })
 
-            await command[1](msg, sock)
+            await command[1].execute(msg, sock)
 
             await sock.sendMessage(msg.key.remoteJid as string, {
                 react: {

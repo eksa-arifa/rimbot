@@ -1,10 +1,12 @@
-import { type WAMessage } from "baileys";
-import { baileys } from "@/config/baileys";
 import { RimBotConfig } from "@/config/rimbot";
 import { getCommand } from "@/core/command";
+import { Command } from "@/interfaces/command";
 
-const menu = async (msg: WAMessage, sock: typeof baileys.sock) => {
-  let text = `╭─❏ *🤖 ${RimBotConfig.bot_name} MENU* ❏
+
+const menu: Command = {
+  name: "menu",
+  async execute(msg, sock) {
+    let text = `╭─❏ *🤖 ${RimBotConfig.bot_name} MENU* ❏
 │
 │ 🕒 *Time:* ${new Date().toLocaleString("id-ID")}
 │ 👤 *User:* @${msg.key.participant?.split("@")[0] || msg.key.remoteJid?.split("@")[0]}
@@ -12,28 +14,29 @@ const menu = async (msg: WAMessage, sock: typeof baileys.sock) => {
 ╰─────────────⬣
 `;
 
-  for (const type of RimBotConfig.command_types) {
-    const commands = await getCommand(type);
+    for (const type of RimBotConfig.command_types) {
+      const commands = await getCommand(type);
 
-    if (commands.length === 0) continue;
+      if (commands.length === 0) continue;
 
-    text += `\n╭─❏ *${type.toUpperCase()} COMMANDS* ❏\n`;
+      text += `\n╭─❏ *${type.toUpperCase()} COMMANDS* ❏\n`;
 
-    for (const [cmdName, cmd] of commands) {
-      text += `│ ✦ ${cmdName}\n`;
+      for (const [cmdName, cmd] of commands) {
+        text += `│ ✦ ${cmdName}\n`;
+      }
+
+      text += `╰──────────────⬣\n`;
     }
 
-    text += `╰──────────────⬣\n`;
-  }
-
-  text += `
+    text += `
 📌 *Prefix:* \`${RimBotConfig.prefix || '.'}\`
 `;
 
-  await sock.sendMessage(msg.key.remoteJid!, {
-    text,
-    mentions: [msg.key.participant || msg.key.remoteJid],
-  }, {quoted: msg});
-};
+    await sock.sendMessage(msg.key.remoteJid!, {
+      text,
+      mentions: [msg.key.participant || msg.key.remoteJid],
+    }, { quoted: msg });
+  }
+}
 
 export default menu;

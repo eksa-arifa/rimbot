@@ -11,7 +11,7 @@ const commandDir = join(__dirname, "..", "commands")
 const jsonDir = join(commandDir, "commands.json")
 
 
-function loadCommand() {
+async function loadCommand() {
 
     const directories = RimBotConfig.command_types
     let listCommand: Record<string, string[][]> = {}
@@ -27,7 +27,9 @@ function loadCommand() {
         for (const file of files) {
             const filePath = join(dir, file);
 
-            exports.push([file.replace(/\.(ts|js)$/, ""), filePath])
+            const mod = await import(filePath)
+
+            exports.push([mod.default.name, filePath])
         }
 
         listCommand[directory] = exports
