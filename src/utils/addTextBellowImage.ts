@@ -24,7 +24,7 @@ export async function addTextBelowImage(imageBuffer: Buffer, text: string) {
 
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, stickerSize, stickerSize);
 
-  if (text && text.trim().length > 0) {
+  if (text && text.trim().length > 0 && text.length <= 18 ) {
     const imgHeight = 432;
     const textY = imgHeight + 55;
 

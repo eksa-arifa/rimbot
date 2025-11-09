@@ -21,5 +21,11 @@ async function getMediaFromExtendedMessage(msg: WAMessage){
 }
 
 
+async function getMediaFromImageMessage(msg: WAMessage){
+    
+    return await downloadMediaMessage(msg, "buffer", {})
+}
 
-export { getMediaFromExtendedMessage }
+
+
+export { getMediaFromExtendedMessage, getMediaFromImageMessage }
