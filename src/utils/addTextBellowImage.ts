@@ -9,7 +9,7 @@ export async function addTextBelowImage(imageBuffer: Buffer, text: string) {
 
   const img = await loadImage(imageBuffer);
   
-  if (text.length >= 16) {
+  if (text.length >= 16 || text.length == 0) {
     ctx.drawImage(img, 0, 0, stickerSize, stickerSize);
   } else {
     const imgHeight = 432;
