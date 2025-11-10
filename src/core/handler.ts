@@ -2,6 +2,7 @@ import { type WAMessage } from "baileys"
 import { getCommand } from "@/core/command"
 import { RimBotConfig } from "@/config/rimbot"
 import { baileys } from "@/config/baileys"
+import { getMiddleware } from "@/core/middleware"
 
 
 
@@ -22,6 +23,16 @@ const handler = async (msg: WAMessage, sock: typeof baileys.sock, type: string, 
                     key: msg.key
                 }
             })
+
+            const listMiddleware = command[1].middleware || []
+
+            for(const middleware of listMiddleware){
+                const mod = await getMiddleware(middleware)
+
+                const executor = await mod.execute(msg, sock)
+
+                if(!executor) return
+            }
 
             await command[1].execute(msg, sock)
 

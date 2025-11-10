@@ -1,14 +1,12 @@
 import { readdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, extname, join } from "path";
-import { fileURLToPath } from "url";
+import { extname, join } from "path";
 import { RimBotConfig } from "@/config/rimbot";
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
-const commandDir = join(__dirname, "..", "commands")
-const jsonDir = join(commandDir, "commands.json")
+const commandDir = join(RimBotConfig.dirname, "..", "commands")
+const cacheDir = join(RimBotConfig.dirname, "..", "cache")
+const jsonDir = join(cacheDir, "commands.json")
 
 
 async function loadCommand() {

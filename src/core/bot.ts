@@ -29,7 +29,7 @@ const startBot = async () => {
         if (textBiasa != null) {
             await handler(msg, sock, "biasa", textBiasa)
         }else if(textReply != null){
-            await handler(msg, sock, "replyan", textReply)
+            await handler(msg, sock, "extended", textReply)
         }else if(textImage != null){
             await handler(msg, sock, "gambar", textImage)
         }
