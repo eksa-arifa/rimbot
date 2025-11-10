@@ -6,7 +6,8 @@ import { Sticker } from "wa-sticker-formatter";
 
 const sticker: Command = {
     name: "sticker",
-    async execute(msg, sock) {
+    middleware: ["auth"],
+    async execute(msg, sock, db) {
         const text = msg.message.imageMessage.caption.split(" ")
         text.shift()
         const sanitizeText = text.join(' ')

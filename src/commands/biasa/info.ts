@@ -4,7 +4,7 @@ import { Command } from "@/interfaces/command";
 
 const info: Command = {
     name: "info",
-    async execute(msg, sock) {
+    async execute(msg, sock, db) {
         const uptime = Math.floor(process.uptime());
 
 

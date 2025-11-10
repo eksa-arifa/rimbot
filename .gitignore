@@ -2,3 +2,4 @@
 /auth
 /src/auth
 /dist
+/src/generated/prisma

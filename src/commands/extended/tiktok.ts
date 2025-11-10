@@ -5,7 +5,8 @@ import { getVideoTikTok } from "@/utils/getVideoTiktok";
 
 const tiktok: Command = {
     name: "tiktok",
-    async execute(msg, sock) {
+    middleware: ["auth"],
+    async execute(msg, sock, db) {
         const message = msg.message.extendedTextMessage.text.split(" ")
 
 

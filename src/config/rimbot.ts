@@ -9,7 +9,8 @@ const RimBotConfig = {
     command_types: [
         "biasa", "extended", "gambar"
     ],
-    dirname: dirname(fileURLToPath(import.meta.url))
+    dirname: dirname(fileURLToPath(import.meta.url)),
+    premium_limit: 20
 }
 
 

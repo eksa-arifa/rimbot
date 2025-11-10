@@ -5,11 +5,14 @@ import { Command } from "@/interfaces/command";
 
 const menu: Command = {
   name: "menu",
-  async execute(msg, sock) {
+  async execute(msg, sock, db) {
+
+    const user = await db.user.findFirst({where: {remotejid: {equals: msg.key.remoteJid}}})
+
     let text = `╭─❏ *🤖 ${RimBotConfig.bot_name} MENU* ❏
 │
 │ 🕒 *Time:* ${new Date().toLocaleString("id-ID")}
-│ 👤 *User:* @${msg.key.participant?.split("@")[0] || msg.key.remoteJid?.split("@")[0]}
+│ 👤 *User:* @${msg.key.participant?.split("@")[0] || msg.key.remoteJid?.split("@")[0]} (${user.name || "tidak terdaftar"})
 │
 ╰─────────────⬣
 `;
