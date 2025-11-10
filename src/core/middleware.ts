@@ -8,7 +8,7 @@ import { join } from "path"
 
 const middlewarePath = join(RimBotConfig.dirname, "..", "middlewares")
 const cachePath = join(RimBotConfig.dirname, "..", "cache")
-const jsonPath = join(cachePath, "middewares.json")
+const jsonPath = join(cachePath, "middlewares.json")
 
 const loadMiddleware = async ()=>{
     const middlewareDir = readdirSync(middlewarePath)
