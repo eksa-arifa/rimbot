@@ -1,66 +1,46 @@
-import { readdirSync, readFileSync, writeFileSync } from "fs";
+import { readdirSync } from "fs";
 import { extname, join } from "path";
 import { RimBotConfig } from "@/config/rimbot";
 
+const commandRegistry = new Map<string, Map<string, string>>();
 
-
-const commandDir = join(RimBotConfig.dirname, "..", "commands")
-const cacheDir = join(RimBotConfig.dirname, "..", "cache")
-const jsonDir = join(cacheDir, "commands.json")
-
+const commandDir = join(RimBotConfig.dirname, "..", "commands");
 
 async function loadCommand() {
+  const directories = RimBotConfig.command_types;
 
-    const directories = RimBotConfig.command_types
-    let listCommand: Record<string, string[][]> = {}
+  for (const directory of directories) {
+    const dir = join(commandDir, directory);
+    const files = readdirSync(dir).filter(file =>
+      [".ts", ".js"].includes(extname(file))
+    );
 
-    for (const directory of directories) {
+    const commandMap = new Map<string, string>();
 
-        const dir = join(commandDir, directory)
-        const files = readdirSync(dir).filter(file =>
-            [".ts", ".js"].includes(extname(file))
-        );
-        const exports: string[][] = []
-
-        for (const file of files) {
-            const filePath = join(dir, file);
-
-            const mod = await import(filePath)
-
-            exports.push([mod.default.name, filePath])
-        }
-
-        listCommand[directory] = exports
-
+    for (const file of files) {
+      const filePath = join(dir, file);
+      const mod = await import(filePath);
+      commandMap.set(mod.default.name, filePath);
     }
 
-    writeFileSync(jsonDir, JSON.stringify(listCommand));
+    commandRegistry.set(directory, commandMap);
+  }
 
-    console.log("Command sudah terload, siap digunakan")
-
+  console.log("Command sudah terload ke dalam Map, siap digunakan!");
 }
-
 
 async function getCommand(category: string) {
-    const commandData = JSON.parse(readFileSync(jsonDir, "utf8"));
+  const commandMap = commandRegistry.get(category);
+  if (!commandMap) throw new Error(`Kategori ${category} tidak ditemukan`);
 
-    const lists = commandData[category];
-    if (!lists) throw new Error(`Kategori ${category} tidak ditemukan`);
+  const exports: [string, any][] = [];
 
+  for (const [name, filePath] of commandMap.entries()) {
+    const mod = await import(filePath);
+    exports.push([name, mod.default]);
+  }
 
-    const exports = []
-
-    for(const list of lists){
-        const mod = await import(list[1])
-
-
-
-        exports.push([list[0], mod.default])
-    }
-    
-    return exports;
+  return exports;
 }
 
-
-
-export { loadCommand, getCommand }
+export { loadCommand, getCommand };

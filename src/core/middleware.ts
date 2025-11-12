@@ -1,46 +1,39 @@
 import { RimBotConfig } from "@/config/rimbot"
 import { Middleware } from "@/interfaces/middleware"
-import { readdirSync, readFileSync, writeFileSync } from "fs"
+import { readdirSync } from "fs"
 import { join } from "path"
 
-
-
+const middlewareRegistry = new Map<string, string>()
 
 const middlewarePath = join(RimBotConfig.dirname, "..", "middlewares")
-const cachePath = join(RimBotConfig.dirname, "..", "cache")
-const jsonPath = join(cachePath, "middlewares.json")
 
-const loadMiddleware = async ()=>{
-    const middlewareDir = readdirSync(middlewarePath)
+const loadMiddleware = async () => {
+  const middlewareDir = readdirSync(middlewarePath)
 
-    const exports: Record<string, string> = {}
-    
-    for(const middleware of middlewareDir){
-        const filePath = join(middlewarePath, middleware)
+  for (const file of middlewareDir) {
+    const filePath = join(middlewarePath, file)
+    const mod = await import(filePath)
 
-
-        const mod = await import(filePath)
-
-
-        exports[mod.default.name] = filePath
+    if (!mod?.default?.name) {
+      console.warn(`Middleware di ${file} tidak punya 'default.name' — dilewati.`)
+      continue
     }
 
-    writeFileSync(jsonPath, JSON.stringify(exports))
+    middlewareRegistry.set(mod.default.name, filePath)
+  }
 
-    console.log("Middleware berhasil di load")
-}
-
-const getMiddleware = async (middleware: string)=>{ 
-    const middlewareData = JSON.parse(readFileSync(jsonPath, "utf8"))
-
-
-    const middlewareModule = middlewareData[middleware]
-
-    const mod = await import(middlewareModule)
-
-    return mod.default
+  console.log("✅ Middleware berhasil dimuat ke dalam Map")
 }
 
 
+const getMiddleware = async (middlewareName: string): Promise<Middleware> => {
+  const filePath = middlewareRegistry.get(middlewareName)
 
-export {loadMiddleware, getMiddleware}
+  if (!filePath)
+    throw new Error(`Middleware "${middlewareName}" tidak ditemukan di registry`)
+
+  const mod = await import(filePath)
+  return mod.default
+}
+
+export { loadMiddleware, getMiddleware }
