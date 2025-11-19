@@ -1,0 +1,3 @@
+# RIMBOT
+
+Dokuemntasi menyusul ygy :)
