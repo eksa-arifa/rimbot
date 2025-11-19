@@ -5,6 +5,7 @@ import { Command } from "@/interfaces/command";
 
 const menu: Command = {
   name: "menu",
+  middleware: ["auth"],
   async execute(msg, sock, db) {
 
     const user = await db.user.findFirst({where: {remotejid: {equals: msg.key.remoteJid}}})
