@@ -8,32 +8,59 @@ const middlewareRegistry = new Map<string, string>()
 const middlewarePath = join(RimBotConfig.dirname, "..", "middlewares")
 
 const loadMiddleware = async () => {
-  const middlewareDir = readdirSync(middlewarePath)
+  try {
+    console.log('Loading middlewares...')
+    
+    const middlewareDir = readdirSync(middlewarePath)
+    console.log(`Found ${middlewareDir.length} middleware files`)
 
-  for (const file of middlewareDir) {
-    const filePath = join(middlewarePath, file)
-    const mod = await import(filePath)
+    for (const file of middlewareDir) {
+      try {
+        const filePath = join(middlewarePath, file)
+        console.log(`Loading middleware: ${file}`)
 
-    if (!mod?.default?.name) {
-      console.warn(`Middleware di ${file} tidak punya 'default.name' — dilewati.`)
-      continue
+        const mod = await import(filePath)
+
+        if (!mod?.default?.name) {
+          console.warn(`Middleware di ${file} tidak punya 'default.name' — dilewati.`)
+          continue
+        }
+
+        middlewareRegistry.set(mod.default.name, filePath)
+        console.log(`Middleware loaded: ${mod.default.name}`)
+
+      } catch (fileError) {
+        console.error(`Failed to load middleware file: ${file}`, fileError)
+      }
     }
 
-    middlewareRegistry.set(mod.default.name, filePath)
-  }
+    console.log(`Middleware loading completed. Total: ${middlewareRegistry.size} middlewares`)
 
-  console.log("✅ Middleware berhasil dimuat ke dalam Map")
+  } catch (error) {
+    console.error('Failed to load middlewares:', error)
+  }
 }
 
-
 const getMiddleware = async (middlewareName: string): Promise<Middleware> => {
-  const filePath = middlewareRegistry.get(middlewareName)
+  try {
+    const filePath = middlewareRegistry.get(middlewareName)
 
-  if (!filePath)
-    throw new Error(`Middleware "${middlewareName}" tidak ditemukan di registry`)
+    if (!filePath) {
+      throw new Error(`Middleware "${middlewareName}" tidak ditemukan di registry`)
+    }
 
-  const mod = await import(filePath)
-  return mod.default
+    const mod = await import(filePath)
+    
+    if (!mod.default) {
+      throw new Error(`Middleware "${middlewareName}" tidak memiliki default export`)
+    }
+
+    return mod.default
+
+  } catch (error) {
+    console.error(`Error getting middleware "${middlewareName}":`, error)
+    throw error
+  }
 }
 
 export { loadMiddleware, getMiddleware }
