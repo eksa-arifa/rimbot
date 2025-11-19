@@ -15,9 +15,18 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
+  id            Int            @id @default(autoincrement())
+  createdAt     DateTime       @default(now())
   name          String
-  remotejid     String   @unique
+  remotejid     String         @unique
   premium_limit Int
+  taskSchedules TaskSchedule[]
+}
+
+model TaskSchedule {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  taskUrl   String
 }
