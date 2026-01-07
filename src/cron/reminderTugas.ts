@@ -5,7 +5,7 @@ import { formatEventsToMessage } from "@/utils/formatEventsToMessage";
 import { getUpcomingEvents } from "@/utils/getUpcommingEvents";
 
 const reminderTugas: Cron = {
-    time: "0 0 3 * * *",
+    time: ["0", "9", "10", "*", "*", "*"],
     execute: async () => {
         try {
             const tasks = await prisma.taskSchedule.findMany({ include: { user: true } });
@@ -14,7 +14,7 @@ const reminderTugas: Cron = {
             for (const task of tasks) {
                 try {
                     const events = await getUpcomingEvents(task.taskUrl);
-                    const message = formatEventsToMessage(events);
+                    const message = formatEventsToMessage(events, task.taskTitle);
     
                     await sock.sendMessage(task.user.remotejid, { text: message });
                 } catch (err) {
@@ -31,3 +31,4 @@ const reminderTugas: Cron = {
 };
 
 export default reminderTugas;
+

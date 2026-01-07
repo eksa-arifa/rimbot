@@ -2,7 +2,7 @@
 
 
 interface Cron{
-    time: string,
+    time: string[],
     execute: ()=>void
 }
 
